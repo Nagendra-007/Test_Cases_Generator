@@ -189,4 +189,4 @@ def download_test_cases():
 
 if __name__ == '__main__':
     database.initialize_db()
-    app.run(debug=True)
+    #app.run(debug=True)
