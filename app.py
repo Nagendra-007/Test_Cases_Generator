@@ -3,27 +3,27 @@ from auth import login, register
 import database
 
 
-app = Flask(__name__)
-app.secret_key = 'Ngk@0625'  # Required for session management
+application = Flask(__name__)
+application.secret_key = 'Ngk@0625'  # Required for session management
 
 # Home Page
-@app.route('/')
+@application.route('/')
 def home_page():
     return render_template('Home.html')
 
 
 # Login Page
-@app.route('/login', methods=['GET', 'POST'])
+@application.route('/login', methods=['GET', 'POST'])
 def login_page():
     return login.handle_login()
 
 # Register Page
-@app.route('/register', methods=['GET', 'POST'])
+@application.route('/register', methods=['GET', 'POST'])
 def register_page():
     return register.handle_register()
 
 # Logout route definition
-@app.route('/logout')
+@application.route('/logout')
 def logout():
     return login.logout()
 
@@ -50,7 +50,7 @@ model = genai.GenerativeModel(model_name="gemini-1.5-pro")
 all_test_cases = []
 test_case_counter = 0  # Tracks the total number of generated test cases
 
-@app.route('/test')
+@application.route('/test')
 def test():
     return render_template('Test_cases.html')
 
@@ -80,7 +80,7 @@ def generate_prompt(functionality, start_case_number=1):
     """
     return prompt
 
-@app.route('/generate_test_cases', methods=['POST'])
+@application.route('/generate_test_cases', methods=['POST'])
 def generate_test_cases():
     global all_test_cases, test_case_counter
 
@@ -115,7 +115,7 @@ def generate_test_cases():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/generate_more_test_cases', methods=['POST'])
+@application.route('/generate_more_test_cases', methods=['POST'])
 def generate_more_test_cases():
     global all_test_cases, test_case_counter
 
@@ -150,7 +150,7 @@ def generate_more_test_cases():
         return jsonify({"error": str(e)}), 500
 
 # Download all test cases as an Excel file
-@app.route('/download_test_cases', methods=['GET'])
+@application.route('/download_test_cases', methods=['GET'])
 def download_test_cases():
     if not all_test_cases:
         return jsonify({"error": "No test cases available to download."}), 400
@@ -189,4 +189,4 @@ def download_test_cases():
 
 if __name__ == '__main__':
     database.initialize_db()
-    #app.run(debug=True)
+    application.run(debug=True)
